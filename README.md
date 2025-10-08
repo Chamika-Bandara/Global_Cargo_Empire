@@ -61,9 +61,13 @@ Voluntarily choosing random contracts gives players control over when they face 
 
 3.3 Random Contract System
 
-Hospital Contract → €1000 guaranteed.
+Hospital Contract → €3000 guaranteed.
 
-Industrial Contract → €5000 + 100km fuel, but always fraudulent.
+Research Lab Contract → €3500 guaranteed.
+
+Industrial Contract → €6000 + 300km fuel, but always fraudulent.
+
+Luxury Contract → €5000 + 200km fuel, but always fraudulent.
 
 Players learn trust patterns only through repeated experience.
 
@@ -144,10 +148,10 @@ Data Source: Real-world airport coordinates dataset (e.g., OpenFlights)
 
 🚀 Future Enhancements
 
-Dynamic weather & risk factors.
+Dynamic weather factors.
 
-AI-driven competitor airlines.
+Deeper sustainability: route emissions, eco-bonus mechanics
 
-Visual route mapping and analytics.
+Visual route mapping.
 
-Cloud-save integration and performance analytics dashboard.
+
