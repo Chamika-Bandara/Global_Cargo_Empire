@@ -132,7 +132,27 @@ def fly():
 
 
     if game['player_range'] < contract['cost']:
-        return jsonify({"success": False, "message": "Not enough fuel!"})
+        if float(game['money']) < 5:
+
+            main.update_game_state(
+                game_id, game['money'], game['player_range'],
+                game['current_location'], game['game_phase'],
+                game['normal_flight_count'], 'lost'
+            )
+
+            return jsonify({
+                "success": True,
+                "money": float(game['money']),
+                "fuel": game['player_range'],
+                "destination": contract['destination'],
+                "message": "BANKRUPT! No fuel and no money.",
+                "phase": game['game_phase'],
+                "normal_flight_count": game['normal_flight_count']
+            })
+        else:
+
+            return jsonify({"success": False, "message": "Not enough fuel!"})
+
 
     new_fuel = game['player_range'] - contract['cost']
     new_money = float(game['money'])
@@ -144,7 +164,6 @@ def fly():
         new_money += contract['reward']
         message = "Delivery Successful!"
 
-    # logic for phases and counters
     new_phase = game['game_phase'] + 1
     current_normal_count = game['normal_flight_count']
     new_normal_count = current_normal_count
@@ -152,21 +171,20 @@ def fly():
     if contract['type'] == 'normal':
         new_normal_count += 1
     elif contract['type'] == 'special':
-        # reset the counter if pick random
         new_normal_count = 0
     elif contract['type'] == 'tutorial':
         new_normal_count = 0
 
-    # Win or Loss
     status = 'active'
     if new_money >= WIN_AMOUNT:
         status = 'won'
         message = "VICTORY! Empire Built."
-    elif new_money <= 0 and new_fuel < 100:
+
+
+    elif new_money <= 0 and new_fuel < 300:
         status = 'lost'
         message = "BANKRUPT! Game Over."
 
-    # Update Data base
     main.update_game_state(
         game_id, new_money, new_fuel,
         contract['destination']['code'],
@@ -182,7 +200,6 @@ def fly():
         "phase": new_phase,
         "normal_flight_count": new_normal_count
     })
-
 
 @app.route("/api/buy-fuel", methods=["POST"])
 def buy_fuel():
