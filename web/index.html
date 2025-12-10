@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Cargo Empire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="bg-image"></div>
+
+    <div id="intro-layer">
+
+        <div class="intro-header">
+            <div class="header-row">
+                <button class="nav-btn btn-exit intro-exit-btn" onclick="location.reload()">EXIT</button>
+            </div>
+            <div class="header-row">
+                <button class="nav-btn big-nav" onclick="openModal('screen-guide')">GUIDE</button>
+                <button class="nav-btn big-nav" onclick="openModal('screen-about')">ABOUT</button>
+            </div>
+        </div>
+
+        <div class="intro-box">
+            <h1 class="giant-title">GLOBAL CARGO<br><span class="text-orange">EMPIRE</span></h1>
+
+            <div class="login-container">
+                <label>PLAYER NAME</label>
+                <input type="text" id="player-name-input" placeholder="ENTER NAME" maxlength="12">
+                <button id="btn-play" class="btn-primary btn-massive">PLAY</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-guide" class="modal-layer hidden">
+        <div class="info-card">
+            <h2>OPERATOR GUIDE</h2>
+            <div class="info-text">
+                <p><b>1. OBJECTIVE:</b> Accumulate <b>€10,000</b> to dominate the logistics market.</p>
+                <p><b>2. FUEL:</b> Travel requires fuel. Exchange rate: <b>€1 = 2 KM</b>.</p>
+                <p><b>3. CONTRACTS:</b> Complete 2 Normal contracts safely to unlock High Risk / High Reward options.</p>
+                <p><b>4. RISK:</b> Special contracts offer huge payouts but may be <b>FRAUDULENT</b> (0 payout).</p>
+            </div>
+            <button class="btn-secondary" onclick="closeModal('screen-guide')">BACK</button>
+        </div>
+    </div>
+
+    <div id="screen-about" class="modal-layer hidden">
+        <div class="info-card">
+            <h2>SYSTEM CREDITS</h2>
+            <div class="info-text">
+                <h3>GLOBAL CARGO EMPIRE</h3>
+                <p><b>Version:</b> Final</p>
+                <p><b>Developed By:</b> Group 5</p>
+                <p><b>Technology:</b> Python Backend / JavaScript Frontend / Leaflet Maps</p>
+            </div>
+            <button class="btn-secondary" onclick="closeModal('screen-about')">BACK</button>
+        </div>
+    </div>
+
+    <div id="game-layer" class="hidden">
+
+        <div class="app-window">
+
+            <div id="map-panel">
+                <div id="map"></div>
+                <div id="hud-overlay">
+                    <div class="hud-box">
+                        <span class="hud-lbl">FUNDS</span>
+                        <span id="hud-money" class="hud-val">€1000</span>
+                    </div>
+                    <div class="hud-box">
+                        <span class="hud-lbl">FUEL</span>
+                        <span id="hud-fuel" class="hud-val">2000 KM</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="control-panel">
+
+                <div class="panel-header-fixed">
+                    <div class="header-top">
+                        <button class="nav-btn btn-exit trigger-exit">EXIT GAME</button>
+                    </div>
+                    <button class="nav-btn btn-refuel trigger-buy-fuel"> ⛽ REFUEL TANK</button>
+                </div>
+
+                <div class="panel-content">
+
+                    <div id="sub-standby" class="sub-screen active">
+                        <div class="center-msg">
+                            <div class="pulse-ring"></div>
+                            <h2>AWAITING INPUT</h2>
+                            <p class="blink big-text">LOCATE YOUR POSITION ON THE MAP</p>
+                        </div>
+                    </div>
+
+                    <div id="sub-tutorial" class="sub-screen">
+                        <h2 class="section-title">CONTRACT OFFER</h2>
+                        <div class="contract-card">
+                            <div class="tag">TUTORIAL</div>
+                            <p class="contract-text">
+                                Your contract is to deliver <b>General Cargo</b> to <b id="tut-dest">BERLIN</b>.
+                                <br><br>
+                                It will take <b id="tut-dist">500</b> km of fuel.
+                                <br>
+                                The reward is <b id="tut-reward" class="text-orange">€1200</b>.
+                            </p>
+                            <button id="btn-tutorial-confirm" class="btn-primary">ACCEPT CONTRACT</button>
+                        </div>
+                    </div>
+
+                    <div id="sub-mode" class="sub-screen">
+                        <h2 class="section-title">SELECT OPERATION</h2>
+                        <div class="mode-grid">
+                            <button id="btn-mode-normal" class="mode-card">
+                                <span class="icon">📦</span>
+                                <h3>NORMAL</h3>
+                                <p>Low Risk</p>
+                            </button>
+                            <button id="btn-mode-random" class="mode-card special-mode">
+                                <span class="icon">⚠️</span>
+                                <h3>RANDOM</h3>
+                                <p>High Reward</p>
+                            </button>
+                        </div>
+                        <p id="mode-lock-msg" class="text-red bold"></p>
+                    </div>
+
+                    <div id="sub-selection" class="sub-screen">
+                        <h2 class="section-title">AVAILABLE CONTRACTS</h2>
+                        <div id="contracts-list" class="list-container"></div>
+                    </div>
+
+                    <div id="sub-random" class="sub-screen">
+                        <h2 class="section-title">SPECIAL OPERATIONS</h2>
+                        <div id="random-list" class="list-container"></div>
+                    </div>
+
+                    <div id="sub-briefing" class="sub-screen">
+                        <h2 class="section-title">CONFIRMATION</h2>
+                        <div class="contract-card">
+                            <h3>MISSION DETAILS</h3>
+                            <p class="contract-text">
+                                Your contract is to deliver <b id="brief-type">...</b> to <b id="brief-dest">...</b>.
+                            </p>
+                            <hr>
+                            <p class="contract-text">
+                                It will take <b id="brief-dist">...</b> km of fuel.
+                            </p>
+                            <p class="contract-text">
+                                The reward is <b id="brief-reward" class="text-orange">...</b>.
+                            </p>
+                            <button id="btn-fly" class="btn-primary">CONFIRM & FLY</button>
+                            <button id="btn-cancel-brief" class="btn-secondary">CANCEL</button>
+                        </div>
+                    </div>
+
+                    <div id="sub-fuel" class="sub-screen">
+                        <div class="center-msg">
+                            <h2>REFUELING STATION</h2>
+                            <p class="big-text">RATE: €1 = 2 KM</p>
+                            <input type="number" id="fuel-amount" placeholder="AMOUNT (€)">
+                            <p id="fuel-preview">FUEL: 0 KM</p>
+                            <div class="row">
+                                <button id="btn-buy-confirm" class="btn-primary">BUY</button>
+                                <button id="btn-buy-cancel" class="btn-secondary">RETURN</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="sub-result" class="sub-screen">
+                        <div class="center-msg">
+                            <h1 id="res-title">SUCCESS</h1>
+                            <p id="res-msg" class="big-text">Delivery Complete</p>
+                            <h2 id="res-amt" class="text-green">+€1000</h2>
+                            <button id="btn-back-map" class="btn-primary">CONTINUE</button>
+                        </div>
+                    </div>
+
+                    <div id="sub-win" class="sub-screen">
+                        <div class="center-msg">
+                            <h1 class="text-green">VICTORY</h1>
+                            <p class="big-text">EMPIRE ESTABLISHED</p>
+                            <button class="btn-primary trigger-reset">RESET SYSTEM</button>
+                        </div>
+                    </div>
+
+                    <div id="sub-lose" class="sub-screen">
+                        <div class="center-msg">
+                            <h1 class="text-orange">BANKRUPT</h1>
+                            <p class="big-text">FUNDS DEPLETED (€0)</p>
+                            <p>COMPANY INSOLVENT</p>
+                            <button class="btn-primary trigger-reset">SYSTEM REBOOT</button>
+                        </div>
+                    </div>
+
+                    <div id="sub-exit" class="sub-screen">
+                        <div class="center-msg">
+                            <h2 class="text-red">EXIT GAME?</h2>
+                            <div class="row">
+                                <button id="btn-confirm-exit" class="btn-primary bg-red">YES</button>
+                                <button id="btn-cancel-exit" class="btn-secondary">NO</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>

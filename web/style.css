@@ -1,0 +1,550 @@
+:root {
+    --primary-orange: #ff6f00;
+    --text-black: #111;
+    --text-white: #fff;
+    --bg-white: #ffffff;
+    --bg-light: #f4f4f4;
+    --success: #009900;
+    --danger: #d50000;
+    --font-head: 'Oswald', sans-serif;
+    --font-body: 'Roboto', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: var(--font-body);
+    background-color: #000;
+    font-size: 16px;
+}
+
+/* BACKGROUND IMAGE */
+.bg-image {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: url('images/cover_art.jpg') center/cover no-repeat;
+    opacity: 0.5;
+    z-index: 0;
+}
+
+/* UTILITIES */
+.hidden { display: none !important; }
+
+/* INTRO LAYER */
+#intro-layer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 3000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.intro-header {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.header-row {
+    display: flex;
+    gap: 15px;
+}
+
+/* NAV BUTTONS */
+.nav-btn {
+    padding: 8px 18px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.big-nav {
+    background: transparent;
+    border: 3px solid white;
+    color: white;
+    padding: 8px 22px;
+    font-size: 1rem;
+    font-family: var(--font-head);
+}
+.big-nav:hover {
+    background: var(--primary-orange);
+    border-color: var(--primary-orange);
+}
+
+.intro-exit-btn {
+    background: var(--danger);
+    border: 2px solid white;
+    color: white;
+    font-size: 0.85rem;
+    font-family: var(--font-head);
+}
+.intro-exit-btn:hover {
+    background: white;
+    color: var(--danger);
+}
+
+/* INTRO CENTER BOX */
+.intro-box {
+    text-align: center;
+}
+
+.giant-title {
+    font-size: clamp(32px, 4vw, 52px);
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 30px;
+    font-family: var(--font-head);
+    text-shadow: 4px 4px 0px rgba(0,0,0,0.8);
+}
+
+.text-orange {
+    color: var(--primary-orange);
+}
+
+/* LOGIN CONTAINER */
+.login-container {
+    background: rgba(0,0,0,0.85);
+    padding: 30px;
+    border-radius: 15px;
+    border: 3px solid var(--primary-orange);
+    width: min(100%, 420px);
+    margin: 0 auto;
+}
+
+.login-container label {
+    display: block;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.125rem; /* ~18px */
+    text-align: center;
+    border: none;
+    margin-bottom: 18px;
+}
+
+/* This class is used for big main button on intro */
+.btn-massive {
+    padding: 14px;
+    font-size: 1.125rem;
+}
+
+/* MODALS: GUIDE & ABOUT */
+.modal-layer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 4000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.info-card {
+    background: white;
+    padding: 30px;
+    width: min(100%, 600px);
+    text-align: center;
+    border-radius: 10px;
+    border: 4px solid var(--primary-orange);
+}
+
+.info-card h2 {
+    font-family: var(--font-head);
+    font-size: 2rem;
+    color: var(--primary-orange);
+    border-bottom: 4px solid black;
+    margin-bottom: 16px;
+    display: inline-block;
+}
+
+.info-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: left;
+    margin-bottom: 20px;
+}
+.info-text p {
+    margin-bottom: 8px;
+}
+
+/* GAME LAYER */
+#game-layer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* MAIN APP WINDOW */
+.app-window {
+    width: min(90vw, 1200px);
+    height: min(90vh, 750px);
+    background: white;
+    display: grid;
+    grid-template-columns: 60% 40%;
+    box-shadow: 0 0 40px rgba(0,0,0,1);
+    border: 4px solid var(--primary-orange);
+}
+
+/* MAP PANEL */
+#map-panel {
+    position: relative;
+    border-right: 4px solid var(--primary-orange);
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    background: #eee;
+}
+
+/* HUD */
+#hud-overlay {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    display: flex;
+    gap: 10px;
+    z-index: 1100;
+}
+
+.hud-box {
+    background: white;
+    border: 3px solid var(--primary-orange);
+    padding: 8px 14px;
+    text-align: center;
+    min-width: 110px;
+}
+
+.hud-lbl {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #555;
+    display: block;
+}
+
+.hud-val {
+    font-size: 1.25rem;   /* ~20px */
+    font-weight: bold;
+    font-family: var(--font-head);
+    color: black;
+}
+
+/* CONTROL PANEL */
+#control-panel {
+    background: var(--bg-white);
+    display: flex;
+    flex-direction: column;
+}
+
+/* PANEL HEADER */
+.panel-header-fixed {
+    background: white;
+    border-bottom: 2px solid #ccc;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.header-top {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* EXIT BUTTON */
+.btn-exit {
+    background: white;
+    border: 2px solid #333;
+    color: #333;
+    padding: 6px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+.btn-exit:hover {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: white;
+}
+
+/* REFUEL BUTTON */
+.btn-refuel {
+    background: #fff3e0;
+    border: 3px solid var(--primary-orange);
+    color: var(--primary-orange);
+    font-size: 1.125rem;
+    padding: 12px;
+    width: 100%;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: var(--font-head);
+}
+.btn-refuel:hover {
+    background: var(--primary-orange);
+    color: white;
+}
+
+/* PANEL CONTENT / SUBSCREENS */
+.panel-content {
+    flex-grow: 1;
+    padding: 16px 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.sub-screen {
+    display: none;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+}
+
+.sub-screen.active {
+    display: flex;
+    animation: fade 0.3s;
+}
+
+@keyframes fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* SECTION TITLE */
+.section-title {
+    font-size: 1.5rem;
+    font-family: var(--font-head);
+    border-bottom: 4px solid var(--primary-orange);
+    margin-bottom: 16px;
+    display: inline-block;
+    color: black;
+}
+
+/* CONTRACT CARD */
+.contract-card {
+    background: white;
+    border: 3px solid #ddd;
+    padding: 20px;
+    margin-bottom: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.contract-card:hover {
+    border-color: var(--primary-orange);
+    background: #fff8e1;
+}
+
+.tag {
+    display: inline-block;
+    background: black;
+    color: white;
+    padding: 4px 8px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+}
+
+.contract-text {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.contract-text b {
+    color: black;
+}
+
+/* MODE GRID */
+.mode-grid {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.mode-card {
+    flex: 1;
+    background: white;
+    border: 3px solid #ddd;
+    padding: 20px 8px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.mode-card h3 {
+    font-size: 1.125rem;
+    margin: 8px 0;
+}
+
+.mode-card:hover {
+    border-color: var(--primary-orange);
+    background: #fff8e1;
+}
+
+.mode-card.locked {
+    opacity: 0.4;
+    pointer-events: none;
+    filter: grayscale(1);
+}
+
+.icon {
+    font-size: 2.25rem; /* ~36px */
+}
+
+/* PRIMARY & SECONDARY BUTTONS */
+.btn-primary {
+    background: var(--primary-orange);
+    color: white;
+    border: none;
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: bold;
+    width: 100%;
+    cursor: pointer;
+    font-family: var(--font-head);
+    text-transform: uppercase;
+}
+
+.btn-primary:hover {
+    background: #e65100;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: white;
+    border: 2px solid #ccc;
+    padding: 10px;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.btn-secondary:hover {
+    border-color: #333;
+}
+
+/* GLOBAL INPUTS (for control panel forms etc.) */
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    text-align: center;
+    border: 3px solid var(--primary-orange);
+    margin-bottom: 12px;
+}
+
+input:focus {
+    outline: none;
+    background: #fff3e0;
+}
+
+/* CENTER MESSAGE LAYOUT */
+.center-msg {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.big-text {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* COLORS / TEXT HELPERS */
+.text-green { color: var(--success); }
+.text-orange { color: var(--primary-orange); }
+.text-red { color: var(--danger); }
+.bold { font-weight: bold; }
+.row {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+.bg-red { background: var(--danger); }
+
+/* POPUP BUTTON (E.G. MAP POPUPS) */
+.popup-btn {
+    background: var(--primary-orange);
+    color: white;
+    border: 4px solid white;
+    font-weight: 900;
+    padding: 10px 22px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 12px;
+    box-shadow: 0 0 15px rgba(255, 111, 0, 0.8);
+}
+
+/* LEAFLET POPUP CONTENT */
+.leaflet-popup-content {
+    font-size: 0.95rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* FLIGHT PATH LINE (Hover effect) */
+.flight-path-hover {
+    stroke-dasharray: 10, 15;
+    animation: dash 30s linear infinite;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: -1000;
+    }
+}
+
+/* ANIMATED PLANE ICON */
+.plane-icon-wrapper {
+    /* Wrapper handles positioning */
+    background: transparent !important;
+    border: none !important;
+}
+
+.plane-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 24px;
+    line-height: 30px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.5));
+    /* Rotation is applied inline via JS */
+}
