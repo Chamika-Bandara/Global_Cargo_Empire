@@ -160,6 +160,7 @@ function removeHoverLine() {
 function executeFlight() {
     const c = gameState.selectedContract;
 
+
     if(gameState.fuel < c.cost) {
         if(gameState.money >= 10) {
             alert("INSUFFICIENT FUEL");
@@ -170,6 +171,10 @@ function executeFlight() {
 
     document.getElementById('sub-briefing').classList.remove('active');
 
+    if(flightLine) map.removeLayer(flightLine);
+    if(playerMarker) map.removeLayer(playerMarker);
+
+
     fetch("/api/fly", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ game_id: gameState.id, contract: c })
@@ -177,28 +182,25 @@ function executeFlight() {
     .then(res => res.json())
     .then(result => {
 
-        if(!result.success) {
-            alert(result.message);
-            showSubScreen('sub-selection'); // Go back
-            return;
-        }
-
-
+        // check for bankrupt.
         if(result.message.includes("BANKRUPT")) {
             gameState.money = result.money;
             gameState.fuel = result.fuel;
             updateHUD();
             showSubScreen('sub-lose');
-            return; // Stop here
+            return;
         }
 
-        if(flightLine) map.removeLayer(flightLine);
-        if(playerMarker) map.removeLayer(playerMarker);
+        // error check
+        if(!result.success) {
+            alert(result.message);
+            return;
+        }
 
-
+        // plane moves
         animatePlane(gameState.currentLocation, c.destination, 2000);
 
-
+        // update data base
         setTimeout(() => {
             gameState.money = result.money;
             gameState.fuel = result.fuel;
@@ -210,62 +212,12 @@ function executeFlight() {
 
             if(result.message.includes("VICTORY")) showSubScreen('sub-win');
             else {
-
                 showResult(!result.message.includes("FRAUD"), c.reward, result.message);
             }
             updateHUD();
         }, 2100);
     });
 }
-
-    document.getElementById('sub-briefing').classList.remove('active');
-
-if(flightLine) map.removeLayer(flightLine);
-if(playerMarker) map.removeLayer(playerMarker);
-
-// 1. SEND REQUEST FIRST (Do not animate yet)
-fetch("/api/fly", {
-    method: "POST", headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ game_id: gameState.id, contract: c })
-})
-.then(res => res.json())
-.then(result => {
-    // 2. CHECK FOR BANKRUPTCY IMMEDIATELLY
-    // If the message says "BANKRUPT", show the loss screen right now.
-    // Do NOT run the animation code below.
-    if(result.message.includes("BANKRUPT")) {
-        gameState.money = result.money;
-        gameState.fuel = result.fuel;
-        updateHUD();
-        showSubScreen('sub-lose');
-        return; // STOP HERE!
-    }
-
-    if(!result.success) {
-        alert(result.message);
-        return;
-    }
-
-    // 3. IF WE ARE SAFE, NOW WE ANIMATE
-    animatePlane(gameState.currentLocation, c.destination, 2000);
-
-    // 4. Update the game state AFTER the animation finishes
-    setTimeout(() => {
-        gameState.money = result.money;
-        gameState.fuel = result.fuel;
-        gameState.currentLocation = result.destination;
-        gameState.phase = result.phase;
-        gameState.normalFlightCount = result.normal_flight_count;
-
-        dropPlayerMarker(false);
-
-        if(result.message.includes("VICTORY")) showSubScreen('sub-win');
-        else {
-            showResult(!result.message.includes("FRAUD"), c.reward, result.message);
-        }
-        updateHUD();
-    }, 2100);
-});
 
 // calculate angle
 function calculateBearing(lat1, lon1, lat2, lon2) {
